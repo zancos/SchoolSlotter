@@ -1,61 +1,695 @@
 {
   "classrooms": [
-    {"name": "Outdoor Courtyard", "priority": 1, "obligatory_type": "at_least_once", "color_code": "#4CAF50"},
-    {"name": "Closed Classroom", "priority": 2, "obligatory_type": "at_least_once", "color_code": "#2196F3"},
-    {"name": "Alternative Classroom", "priority": 3, "obligatory_type": "optional", "color_code": "#FF9800"}
+    {
+      "name": "Outdoor Courtyard",
+      "priority": 1,
+      "obligatory_type": "at_least_once",
+      "color_code": "#4CAF50"
+    },
+    {
+      "name": "Closed Classroom",
+      "priority": 2,
+      "obligatory_type": "at_least_once",
+      "color_code": "#2196F3"
+    },
+    {
+      "name": "Alternative Classroom",
+      "priority": 3,
+      "obligatory_type": "optional",
+      "color_code": "#FF9800"
+    }
   ],
   "time_slots": [
-    {"id": 0, "weekday": 0, "slot_index": 0, "start_time": "09:00", "end_time": "10:00"},
-    {"id": 1, "weekday": 0, "slot_index": 1, "start_time": "10:00", "end_time": "11:00"},
-    {"id": 2, "weekday": 0, "slot_index": 2, "start_time": "11:30", "end_time": "12:30"},
-    {"id": 3, "weekday": 0, "slot_index": 3, "start_time": "12:30", "end_time": "13:30"},
-    {"id": 4, "weekday": 0, "slot_index": 4, "start_time": "15:00", "end_time": "16:00"},
-    {"id": 5, "weekday": 0, "slot_index": 5, "start_time": "16:00", "end_time": "17:00"},
-    {"id": 6, "weekday": 0, "slot_index": 6, "start_time": "17:00", "end_time": "18:00"},
-    {"id": 7, "weekday": 1, "slot_index": 0, "start_time": "09:00", "end_time": "10:00"},
-    {"id": 8, "weekday": 1, "slot_index": 1, "start_time": "10:00", "end_time": "11:00"},
-    {"id": 9, "weekday": 1, "slot_index": 2, "start_time": "11:30", "end_time": "12:30"},
-    {"id": 10, "weekday": 1, "slot_index": 3, "start_time": "12:30", "end_time": "13:30"},
-    {"id": 11, "weekday": 1, "slot_index": 4, "start_time": "15:00", "end_time": "16:00"},
-    {"id": 12, "weekday": 1, "slot_index": 5, "start_time": "16:00", "end_time": "17:00"},
-    {"id": 13, "weekday": 1, "slot_index": 6, "start_time": "17:00", "end_time": "18:00"},
-    {"id": 14, "weekday": 2, "slot_index": 0, "start_time": "09:00", "end_time": "10:00"},
-    {"id": 15, "weekday": 2, "slot_index": 1, "start_time": "10:00", "end_time": "11:00"},
-    {"id": 16, "weekday": 2, "slot_index": 2, "start_time": "11:30", "end_time": "12:30"},
-    {"id": 17, "weekday": 2, "slot_index": 3, "start_time": "12:30", "end_time": "13:30"},
-    {"id": 18, "weekday": 2, "slot_index": 4, "start_time": "15:00", "end_time": "16:00"},
-    {"id": 19, "weekday": 2, "slot_index": 5, "start_time": "16:00", "end_time": "17:00"},
-    {"id": 20, "weekday": 2, "slot_index": 6, "start_time": "17:00", "end_time": "18:00"},
-    {"id": 21, "weekday": 3, "slot_index": 0, "start_time": "09:00", "end_time": "10:00"},
-    {"id": 22, "weekday": 3, "slot_index": 1, "start_time": "10:00", "end_time": "11:00"},
-    {"id": 23, "weekday": 3, "slot_index": 2, "start_time": "11:30", "end_time": "12:30"},
-    {"id": 24, "weekday": 3, "slot_index": 3, "start_time": "12:30", "end_time": "13:30"},
-    {"id": 25, "weekday": 3, "slot_index": 4, "start_time": "15:00", "end_time": "16:00"},
-    {"id": 26, "weekday": 3, "slot_index": 5, "start_time": "16:00", "end_time": "17:00"},
-    {"id": 27, "weekday": 3, "slot_index": 6, "start_time": "17:00", "end_time": "18:00"},
-    {"id": 28, "weekday": 4, "slot_index": 0, "start_time": "09:00", "end_time": "10:00"},
-    {"id": 29, "weekday": 4, "slot_index": 1, "start_time": "10:00", "end_time": "11:00"},
-    {"id": 30, "weekday": 4, "slot_index": 2, "start_time": "11:30", "end_time": "12:30"},
-    {"id": 31, "weekday": 4, "slot_index": 3, "start_time": "12:30", "end_time": "13:30"},
-    {"id": 32, "weekday": 4, "slot_index": 4, "start_time": "15:00", "end_time": "16:00"},
-    {"id": 33, "weekday": 4, "slot_index": 5, "start_time": "16:00", "end_time": "17:00"},
-    {"id": 34, "weekday": 4, "slot_index": 6, "start_time": "17:00", "end_time": "18:00"}
+    {
+      "id": 0,
+      "weekday": 0,
+      "slot_index": 0,
+      "start_time": "09:00",
+      "end_time": "10:00"
+    },
+    {
+      "id": 1,
+      "weekday": 0,
+      "slot_index": 1,
+      "start_time": "10:00",
+      "end_time": "11:00"
+    },
+    {
+      "id": 2,
+      "weekday": 0,
+      "slot_index": 2,
+      "start_time": "11:30",
+      "end_time": "12:30"
+    },
+    {
+      "id": 3,
+      "weekday": 0,
+      "slot_index": 3,
+      "start_time": "12:30",
+      "end_time": "13:30"
+    },
+    {
+      "id": 4,
+      "weekday": 0,
+      "slot_index": 4,
+      "start_time": "15:00",
+      "end_time": "16:00"
+    },
+    {
+      "id": 5,
+      "weekday": 0,
+      "slot_index": 5,
+      "start_time": "16:00",
+      "end_time": "17:00"
+    },
+    {
+      "id": 6,
+      "weekday": 0,
+      "slot_index": 6,
+      "start_time": "17:00",
+      "end_time": "18:00"
+    },
+    {
+      "id": 7,
+      "weekday": 1,
+      "slot_index": 0,
+      "start_time": "09:00",
+      "end_time": "10:00"
+    },
+    {
+      "id": 8,
+      "weekday": 1,
+      "slot_index": 1,
+      "start_time": "10:00",
+      "end_time": "11:00"
+    },
+    {
+      "id": 9,
+      "weekday": 1,
+      "slot_index": 2,
+      "start_time": "11:30",
+      "end_time": "12:30"
+    },
+    {
+      "id": 10,
+      "weekday": 1,
+      "slot_index": 3,
+      "start_time": "12:30",
+      "end_time": "13:30"
+    },
+    {
+      "id": 11,
+      "weekday": 1,
+      "slot_index": 4,
+      "start_time": "15:00",
+      "end_time": "16:00"
+    },
+    {
+      "id": 12,
+      "weekday": 1,
+      "slot_index": 5,
+      "start_time": "16:00",
+      "end_time": "17:00"
+    },
+    {
+      "id": 13,
+      "weekday": 1,
+      "slot_index": 6,
+      "start_time": "17:00",
+      "end_time": "18:00"
+    },
+    {
+      "id": 14,
+      "weekday": 2,
+      "slot_index": 0,
+      "start_time": "09:00",
+      "end_time": "10:00"
+    },
+    {
+      "id": 15,
+      "weekday": 2,
+      "slot_index": 1,
+      "start_time": "10:00",
+      "end_time": "11:00"
+    },
+    {
+      "id": 16,
+      "weekday": 2,
+      "slot_index": 2,
+      "start_time": "11:30",
+      "end_time": "12:30"
+    },
+    {
+      "id": 17,
+      "weekday": 2,
+      "slot_index": 3,
+      "start_time": "12:30",
+      "end_time": "13:30"
+    },
+    {
+      "id": 18,
+      "weekday": 2,
+      "slot_index": 4,
+      "start_time": "15:00",
+      "end_time": "16:00"
+    },
+    {
+      "id": 19,
+      "weekday": 2,
+      "slot_index": 5,
+      "start_time": "16:00",
+      "end_time": "17:00"
+    },
+    {
+      "id": 20,
+      "weekday": 2,
+      "slot_index": 6,
+      "start_time": "17:00",
+      "end_time": "18:00"
+    },
+    {
+      "id": 21,
+      "weekday": 3,
+      "slot_index": 0,
+      "start_time": "09:00",
+      "end_time": "10:00"
+    },
+    {
+      "id": 22,
+      "weekday": 3,
+      "slot_index": 1,
+      "start_time": "10:00",
+      "end_time": "11:00"
+    },
+    {
+      "id": 23,
+      "weekday": 3,
+      "slot_index": 2,
+      "start_time": "11:30",
+      "end_time": "12:30"
+    },
+    {
+      "id": 24,
+      "weekday": 3,
+      "slot_index": 3,
+      "start_time": "12:30",
+      "end_time": "13:30"
+    },
+    {
+      "id": 25,
+      "weekday": 3,
+      "slot_index": 4,
+      "start_time": "15:00",
+      "end_time": "16:00"
+    },
+    {
+      "id": 26,
+      "weekday": 3,
+      "slot_index": 5,
+      "start_time": "16:00",
+      "end_time": "17:00"
+    },
+    {
+      "id": 27,
+      "weekday": 3,
+      "slot_index": 6,
+      "start_time": "17:00",
+      "end_time": "18:00"
+    },
+    {
+      "id": 28,
+      "weekday": 4,
+      "slot_index": 0,
+      "start_time": "09:00",
+      "end_time": "10:00"
+    },
+    {
+      "id": 29,
+      "weekday": 4,
+      "slot_index": 1,
+      "start_time": "10:00",
+      "end_time": "11:00"
+    },
+    {
+      "id": 30,
+      "weekday": 4,
+      "slot_index": 2,
+      "start_time": "11:30",
+      "end_time": "12:30"
+    },
+    {
+      "id": 31,
+      "weekday": 4,
+      "slot_index": 3,
+      "start_time": "12:30",
+      "end_time": "13:30"
+    },
+    {
+      "id": 32,
+      "weekday": 4,
+      "slot_index": 4,
+      "start_time": "15:00",
+      "end_time": "16:00"
+    },
+    {
+      "id": 33,
+      "weekday": 4,
+      "slot_index": 5,
+      "start_time": "16:00",
+      "end_time": "17:00"
+    },
+    {
+      "id": 34,
+      "weekday": 4,
+      "slot_index": 6,
+      "start_time": "17:00",
+      "end_time": "18:00"
+    }
   ],
   "courses": [
-    {"name": "1st Grade Primary", "color_code": "#F44336", "time_slots": [[0,0],[2,1]]},
-    {"name": "2nd Grade Primary", "color_code": "#E91E63", "time_slots": [[1,2],[3,3]]},
-    {"name": "3rd Grade Primary", "color_code": "#9C27B0", "time_slots": [[0,1],[4,3]]},
-    {"name": "4th Grade Primary", "color_code": "#673AB7", "time_slots": [[1,0],[2,0]]},
-    {"name": "5th Grade Primary", "color_code": "#3F51B5", "time_slots": [[0,2],[3,1]]},
-    {"name": "6th Grade Primary", "color_code": "#2196F3", "time_slots": [[2,2],[4,0]]},
-    {"name": "1st Grade Secondary", "color_code": "#03A9F4", "time_slots": [[1,1],[3,0],[4,2]]},
-    {"name": "2nd Grade Secondary", "color_code": "#00BCD4", "time_slots": [[2,1],[3,2],[4,1]]},
-    {"name": "3rd Grade Secondary", "color_code": "#009688", "time_slots": [[0,3],[2,3],[4,3]]},
-    {"name": "4th Grade Secondary", "color_code": "#4CAF50", "time_slots": [[0,4],[1,3],[2,4]]},
-    {"name": "1st Grade Bachillerato", "color_code": "#8BC34A", "time_slots": [[0,5],[2,5],[4,4]]},
-    {"name": "2nd Grade Bachillerato", "color_code": "#CDDC39", "time_slots": [[1,4],[3,4],[4,5]]},
-    {"name": "Advanced Course A", "color_code": "#FFEB3B", "time_slots": [[0,6],[2,6],[4,6]]},
-    {"name": "Advanced Course B", "color_code": "#FFC107", "time_slots": [[1,5],[3,5],[4,6]]},
-    {"name": "Advanced Course C", "color_code": "#FF9800", "time_slots": [[1,6],[2,0],[3,6]]}
+    {
+      "name": "1º ESO A",
+      "color_code": "1ºESOA",
+      "time_slots": [
+        [
+          0,
+          0
+        ],
+        [
+          1,
+          0
+        ]
+      ]
+    },
+    {
+      "name": "1º ESO B",
+      "color_code": "1ºESOB",
+      "time_slots": [
+        [
+          0,
+          1
+        ],
+        [
+          1,
+          1
+        ]
+      ]
+    },
+    {
+      "name": "2º ESO A",
+      "color_code": "2ºESOA",
+      "time_slots": [
+        [
+          0,
+          2
+        ],
+        [
+          1,
+          2
+        ]
+      ]
+    },
+    {
+      "name": "2º ESO B",
+      "color_code": "2ºESOB",
+      "time_slots": [
+        [
+          0,
+          3
+        ],
+        [
+          1,
+          3
+        ]
+      ]
+    },
+    {
+      "name": "3º ESO A",
+      "color_code": "3ºESOA",
+      "time_slots": [
+        [
+          0,
+          4
+        ],
+        [
+          1,
+          4
+        ]
+      ]
+    },
+    {
+      "name": "3º ESO B",
+      "color_code": "3ºESOB",
+      "time_slots": [
+        [
+          0,
+          5
+        ],
+        [
+          1,
+          5
+        ]
+      ]
+    },
+    {
+      "name": "4º ESO A",
+      "color_code": "4ºESOA",
+      "time_slots": [
+        [
+          0,
+          6
+        ],
+        [
+          1,
+          6
+        ]
+      ]
+    },
+    {
+      "name": "4º ESO B",
+      "color_code": "4ºESOB",
+      "time_slots": [
+        [
+          2,
+          0
+        ],
+        [
+          3,
+          0
+        ]
+      ]
+    },
+    {
+      "name": "1º PMAR",
+      "color_code": "1ºPMAR",
+      "time_slots": [
+        [
+          2,
+          1
+        ],
+        [
+          3,
+          1
+        ]
+      ]
+    },
+    {
+      "name": "2º PMAR",
+      "color_code": "2ºPMAR",
+      "time_slots": [
+        [
+          2,
+          2
+        ],
+        [
+          3,
+          2
+        ]
+      ]
+    },
+    {
+      "name": "1º BACH A",
+      "color_code": "1ºBACHA",
+      "time_slots": [
+        [
+          2,
+          3
+        ],
+        [
+          3,
+          3
+        ]
+      ]
+    },
+    {
+      "name": "1º BACH B",
+      "color_code": "1ºBACHB",
+      "time_slots": [
+        [
+          2,
+          4
+        ],
+        [
+          3,
+          4
+        ]
+      ]
+    },
+    {
+      "name": "2º BACH A",
+      "color_code": "2ºBACHA",
+      "time_slots": [
+        [
+          2,
+          5
+        ],
+        [
+          3,
+          5
+        ]
+      ]
+    },
+    {
+      "name": "2º BACH B",
+      "color_code": "2ºBACHB",
+      "time_slots": [
+        [
+          2,
+          6
+        ],
+        [
+          3,
+          6
+        ]
+      ]
+    },
+    {
+      "name": "FP Básica 1",
+      "color_code": "FPBÁSICA1",
+      "time_slots": [
+        [
+          4,
+          0
+        ],
+        [
+          0,
+          0
+        ]
+      ]
+    },
+    {
+      "name": "FP Básica 2",
+      "color_code": "FPBÁSICA2",
+      "time_slots": [
+        [
+          4,
+          1
+        ],
+        [
+          0,
+          1
+        ]
+      ]
+    },
+    {
+      "name": "FP Grado Medio 1",
+      "color_code": "FPGRADOMEDIO1",
+      "time_slots": [
+        [
+          4,
+          2
+        ],
+        [
+          0,
+          2
+        ]
+      ]
+    },
+    {
+      "name": "FP Grado Medio 2",
+      "color_code": "FPGRADOMEDIO2",
+      "time_slots": [
+        [
+          4,
+          3
+        ],
+        [
+          0,
+          3
+        ]
+      ]
+    },
+    {
+      "name": "FP Grado Superior 1",
+      "color_code": "FPGRADOSUPERIOR1",
+      "time_slots": [
+        [
+          4,
+          4
+        ],
+        [
+          0,
+          4
+        ]
+      ]
+    },
+    {
+      "name": "FP Grado Superior 2",
+      "color_code": "FPGRADOSUPERIOR2",
+      "time_slots": [
+        [
+          4,
+          5
+        ],
+        [
+          0,
+          5
+        ]
+      ]
+    },
+    {
+      "name": "Adultos",
+      "color_code": "ADULTOS",
+      "time_slots": [
+        [
+          4,
+          6
+        ],
+        [
+          0,
+          6
+        ]
+      ]
+    },
+    {
+      "name": "Música",
+      "color_code": "MÚSICA",
+      "time_slots": [
+        [
+          1,
+          0
+        ],
+        [
+          2,
+          0
+        ],
+        [
+          3,
+          0
+        ]
+      ]
+    },
+    {
+      "name": "Deporte",
+      "color_code": "DEPORTE",
+      "time_slots": [
+        [
+          1,
+          1
+        ],
+        [
+          2,
+          1
+        ],
+        [
+          3,
+          1
+        ]
+      ]
+    },
+    {
+      "name": "Inglés",
+      "color_code": "INGLÉS",
+      "time_slots": [
+        [
+          1,
+          2
+        ],
+        [
+          2,
+          2
+        ],
+        [
+          3,
+          2
+        ]
+      ]
+    },
+    {
+      "name": "Francés",
+      "color_code": "FRANCÉS",
+      "time_slots": [
+        [
+          1,
+          3
+        ],
+        [
+          2,
+          3
+        ],
+        [
+          3,
+          3
+        ]
+      ]
+    },
+    {
+      "name": "Tecnología",
+      "color_code": "TECNOLOGÍA",
+      "time_slots": [
+        [
+          1,
+          4
+        ],
+        [
+          2,
+          4
+        ],
+        [
+          3,
+          4
+        ]
+      ]
+    },
+    {
+      "name": "Informática",
+      "color_code": "INFORMÁTICA",
+      "time_slots": [
+        [
+          1,
+          5
+        ],
+        [
+          2,
+          5
+        ],
+        [
+          3,
+          5
+        ]
+      ]
+    },
+    {
+      "name": "Proyecto",
+      "color_code": "PROYECTO",
+      "time_slots": [
+        [
+          1,
+          6
+        ],
+        [
+          2,
+          6
+        ],
+        [
+          3,
+          6
+        ],
+        [
+          4,
+          0
+        ]
+      ]
+    }
   ]
 }
