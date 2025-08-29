@@ -21,6 +21,8 @@ import seaborn as sns
 from matplotlib.backends.backend_pdf import PdfPages
 import textwrap
 
+import re as _re
+
 warnings.filterwarnings('ignore')
 
 # GPU Detection with better error handling
@@ -301,31 +303,20 @@ class MegaTurboScheduler:
                 self.assignments.append((course.name, slot_key))
     
     def _prepare_optimization_data(self):
-        """Prepare data for ultra-fast processing"""
-        # Create slot assignment map for fast lookup
+        """Prepare data for ultra-fast processing (global obligations)"""
+        # Map assignment index -> slot_key
         for i, (course_name, slot_key) in enumerate(self.assignments):
             self.slot_assignment_map[i] = slot_key
-        
-        # Prepare obligatory constraint data
-        obligatory_data = {}
-        course_assignments = defaultdict(list)
-        
-        for i, (course_name, slot_key) in enumerate(self.assignments):
-            course_assignments[course_name].append(i)
-        
-        for course_name, assignment_indices in course_assignments.items():
-            obligatory_data[course_name] = {
-                'indices': assignment_indices,
-                'requirements': []
-            }
-            
-            for j, classroom in enumerate(self.classrooms):
-                if classroom.obligatory_type == ObligatoryType.AT_LEAST_ONCE:
-                    obligatory_data[course_name]['requirements'].append((j, 1))
-                elif classroom.obligatory_type == ObligatoryType.AT_LEAST_TWICE:
-                    obligatory_data[course_name]['requirements'].append((j, 2))
-        
-        return obligatory_data
+
+        # Global obligations per classroom index
+        obligations = {}
+        for j, classroom in enumerate(self.classrooms):
+            if classroom.obligatory_type == ObligatoryType.AT_LEAST_ONCE:
+                obligations[j] = 1
+            elif classroom.obligatory_type == ObligatoryType.AT_LEAST_TWICE:
+                obligations[j] = 2
+        return {'global_obligations': obligations}
+
     
     def solve_mega_turbo(self, mode: str = "auto", timeout_minutes: int = 10) -> Optional[Dict]:
         """Solve using mega-turbo algorithm"""
@@ -368,16 +359,13 @@ class MegaTurboScheduler:
     def _solve_multicore_mode(self, timeout_minutes: int) -> Optional[Dict]:
         """Multi-core CPU solving"""
         tracker = UltimateProgressTracker("Multi-Core CPU Mode")
-        
         try:
             n_processes = min(mp.cpu_count(), 16)
             searches_per_process = 10000
-            
             print(f"🔥 Launching {n_processes} parallel processes...")
-            
-            # Use ProcessPoolExecutor for true parallelism
+
+            best_result = None
             with ProcessPoolExecutor(max_workers=n_processes) as executor:
-                # Submit parallel tasks
                 futures = []
                 for process_id in range(n_processes):
                     future = executor.submit(
@@ -390,42 +378,36 @@ class MegaTurboScheduler:
                         timeout_minutes * 60 // n_processes
                     )
                     futures.append(future)
-                
-                # Monitor and collect results
-                best_result = None
-                completed = 0
-                
+
                 for future in as_completed(futures, timeout=timeout_minutes*60):
                     try:
                         result = future.result()
-                        completed += 1
-                        
-                        tracker.update(
-                            phase=f"Collecting results ({completed}/{n_processes})",
-                            iterations=completed * searches_per_process
-                        )
-                        
+                        tracker.update(phase="Collecting results", iterations=searches_per_process)
                         if result and (not best_result or result['fitness'] > best_result['fitness']):
                             best_result = result
                             tracker.add_solution(result['fitness'])
                             print(f"\n✨ Process {result['process_id']} found solution!")
-                            break  # First valid solution wins
-                            
+                            # Cancel remaining futures and return immediately
+                            for f in futures:
+                                if f is not future:
+                                    f.cancel()
+                            try:
+                                executor.shutdown(cancel_futures=True)
+                            except Exception:
+                                pass
+                            tracker.finish()
+                            return best_result['solution']
                     except Exception as e:
                         print(f"⚠️ Process error: {e}")
-                
-                tracker.finish()
-                
-                if best_result:
-                    return best_result['solution']
-                
-                return None
-                
+
+            tracker.finish()
+            return best_result['solution'] if best_result else None
+
         except Exception as e:
             print(f"❌ Multi-core error: {e}")
             tracker.finish()
             return None
-    
+
     def _solve_hybrid_mode(self, timeout_minutes: int) -> Optional[Dict]:
         """Hybrid approach: multi-core + genetic"""
         print("🎯 Hybrid mode: Multi-core search + Genetic refinement")
@@ -502,59 +484,60 @@ class MegaTurboScheduler:
     
     def _calculate_detailed_fitness(self, individual: List[int]) -> float:
         """Detailed fitness calculation with all constraints"""
+        # Basic priority scoring (higher priority -> higher weight)
+        # Precompute weights on first call
         score = 0
         penalty = 0
-        
-        # Basic priority scoring
+        if not hasattr(self, 'classroom_weights'):
+            max_p = max(c.priority for c in self.classrooms) if self.classrooms else 1
+            self.classroom_weights = [max_p + 1 - c.priority for c in self.classrooms]
         for classroom_idx in individual:
-            score += (self.n_classrooms - classroom_idx)
-        
+            score += self.classroom_weights[classroom_idx]
+
         # Conflict detection
         slot_usage = defaultdict(set)
         course_classrooms = defaultdict(list)
-        
         for i, classroom_idx in enumerate(individual):
             course_name, slot_key = self.assignments[i]
-            
             # Check slot conflicts
             if classroom_idx in slot_usage[slot_key]:
                 penalty += 1000
             slot_usage[slot_key].add(classroom_idx)
-            
             # Track course assignments
             course_classrooms[course_name].append(classroom_idx)
-        
-        # Check obligatory constraints
-        for course_name, data in self.obligatory_data.items():
-            assigned_classrooms = course_classrooms.get(course_name, [])
-            for classroom_idx, required_count in data['requirements']:
-                actual_count = assigned_classrooms.count(classroom_idx)
-                if actual_count < required_count:
-                    penalty += 500 * (required_count - actual_count)
-        
+
+        # Global obligatory constraints
+        global_usage = defaultdict(int)
+        for idx in individual:
+            global_usage[idx] += 1
+        obligations = self.obligatory_data.get('global_obligations', {})
+        for j, req in obligations.items():
+            if global_usage.get(j, 0) < req:
+                penalty += 500 * (req - global_usage.get(j, 0))
+
         return score - penalty
-    
+
     def _is_valid_solution(self, individual: List[int]) -> bool:
         """Check if solution is valid"""
         slot_usage = defaultdict(set)
         course_classrooms = defaultdict(list)
-        
+
         for i, classroom_idx in enumerate(individual):
             course_name, slot_key = self.assignments[i]
-            
             if classroom_idx in slot_usage[slot_key]:
                 return False
             slot_usage[slot_key].add(classroom_idx)
             course_classrooms[course_name].append(classroom_idx)
-        
-        # Check obligatory constraints
-        for course_name, data in self.obligatory_data.items():
-            assigned_classrooms = course_classrooms.get(course_name, [])
-            for classroom_idx, required_count in data['requirements']:
-                actual_count = assigned_classrooms.count(classroom_idx)
-                if actual_count < required_count:
-                    return False
-        
+
+        # Global obligatory constraints
+        global_usage = defaultdict(int)
+        for idx in individual:
+            global_usage[idx] += 1
+        obligations = self.obligatory_data.get('global_obligations', {})
+        for j, req in obligations.items():
+            if global_usage.get(j, 0) < req:
+                return False
+
         return True
     
     def _evolve_population(self, population: List[List[int]], fitness_scores: List[float]) -> List[List[int]]:
@@ -624,6 +607,7 @@ class MegaTurboScheduler:
         
         return dict(result)
 
+
 def parallel_search_worker(process_id: int, n_searches: int, assignments: List[Tuple], 
                           n_classrooms: int, obligatory_data: Dict, timeout_seconds: int) -> Optional[Dict]:
     """Worker function for parallel processing"""
@@ -672,6 +656,7 @@ def parallel_search_worker(process_id: int, n_searches: int, assignments: List[T
     
     return None
 
+
 def calculate_fitness_simple(individual: List[int], assignments: List[Tuple], n_classrooms: int) -> float:
     """Simplified fitness calculation for parallel processing"""
     score = sum(n_classrooms - classroom_idx for classroom_idx in individual)
@@ -686,28 +671,31 @@ def calculate_fitness_simple(individual: List[int], assignments: List[Tuple], n_
     
     return score - penalty
 
-def is_valid_solution_simple(individual: List[int], assignments: List[Tuple], 
-                           obligatory_data: Dict, n_classrooms: int) -> bool:
+
+def is_valid_solution_simple(individual: List[int], assignments: List[Tuple],
+                             obligatory_data: Dict, n_classrooms: int) -> bool:
     """Simplified validation for parallel processing"""
     slot_usage = defaultdict(set)
     course_classrooms = defaultdict(list)
-    
+
     for i, classroom_idx in enumerate(individual):
         course_name, slot_key = assignments[i]
-        
         if classroom_idx in slot_usage[slot_key]:
             return False
         slot_usage[slot_key].add(classroom_idx)
         course_classrooms[course_name].append(classroom_idx)
-    
-    # Quick obligatory check
-    for course_name, data in obligatory_data.items():
-        assigned_classrooms = course_classrooms.get(course_name, [])
-        for classroom_idx, required_count in data['requirements']:
-            if assigned_classrooms.count(classroom_idx) < required_count:
-                return False
-    
+
+    # Global obligatory check
+    obligations = obligatory_data.get('global_obligations', {})
+    global_usage = defaultdict(int)
+    for idx in individual:
+        global_usage[idx] += 1
+    for j, req in obligations.items():
+        if global_usage.get(j, 0) < req:
+            return False
+
     return True
+
 
 class UltimateScheduleVisualizer:
     """Ultimate PDF visualizer with weekly grid as first page"""
@@ -719,8 +707,21 @@ class UltimateScheduleVisualizer:
         self.time_slot_dict = {ts.get_key(): ts for ts in time_slots}
         
         # Course colors mapping
-        self.course_colors = {course.name: course.color_code for course in courses}
-        
+        def _is_hex_color(s):
+            return isinstance(s, str) and _re.fullmatch(r'#[0-9A-Fa-f]{6}', s) is not None
+
+        # Build a stable palette from seaborn if needed
+        _names = [c.name for c in courses]
+        _palette = sns.color_palette('tab20', n_colors=max(20, len(_names))).as_hex()
+        self.course_colors = {}
+        for _c in courses:
+            raw = _c.color_code
+            if _is_hex_color(raw):
+                self.course_colors[_c.name] = raw
+            else:
+                idx = abs(hash(_c.name)) % len(_palette)
+                self.course_colors[_c.name] = _palette[idx]
+
         # Classroom colors mapping
         self.classroom_colors = {classroom.name: classroom.color_code for classroom in classrooms}
     
@@ -1303,6 +1304,7 @@ class UltimateScheduleVisualizer:
         except:
             return False
 
+
 class SchoolDataManager:
     def __init__(self, filename: str = "school_data.json"):
         self.filename = filename
@@ -1363,6 +1365,24 @@ class SchoolDataManager:
             json.dump(data, f, indent=2, ensure_ascii=False)
         
         print(f"💾 Data saved to {self.filename}")
+
+    def map_classroom_placeholders(self, schedule: Dict) -> Dict:
+        idx_to_name = {i: c.name for i, c in enumerate(self.classrooms)}
+        fixed = {}
+        for course_name, assignments in schedule.items():
+            fixed_list = []
+            for a in assignments:
+                cname = a.get("classroom")
+                if isinstance(cname, str) and cname.startswith("Classroom_"):
+                    try:
+                        idx = int(cname.split("_")[1])
+                        cname = idx_to_name.get(idx, cname)
+                    except Exception:
+                        pass
+                fixed_list.append({"slot": a.get("slot"), "classroom": cname})
+            fixed[course_name] = fixed_list
+        return fixed
+
 
 def main():
     """Ultimate main function with PDF generation"""
@@ -1439,7 +1459,10 @@ def main():
                 data_manager.courses,
                 data_manager.time_slots
             )
+            # Map placeholders to real classroom names for rendering
+            solution = data_manager.map_classroom_placeholders(solution)
             visualizer.create_ultimate_pdf_report(solution, "ultimate_schedule_report.pdf")
+
             
             print("\n🎉 ULTIMATE SUCCESS!")
             print("📁 Schedule saved in 'school_data.json'")

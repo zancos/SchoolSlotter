@@ -1,0 +1,24 @@
+# courses_spec.txt
+# ---------------------------------
+# One course group specification per line, in the form:
+#   <level><letters>: <lessons>
+# where:
+#   - <level> is a positive integer like 1, 2, 3, ... representing the year/grade.
+#   - <letters> is one or more uppercase letters representing groups in that level (e.g., A, ABCDE, ABCDEF).
+#   - <lessons> is the number of sessions per week for each group (positive integer).
+# Examples:
+#   1ABCDE: 2    # Level 1 has groups A,B,C,D,E; each group has 2 sessions per week
+#   6ABCDEF: 3   # Level 6 has groups A..F; each group has 3 sessions per week
+#   7A: 4        # Level 7 group A has 4 sessions per week
+#
+# Comments and blank lines are ignored. Lines must not contain extra spaces except around the colon.
+# The generator dynamically computes grid capacity from time_slots in school_data.json and chooses the minimal per-slot sharing cap needed; it escalates only if placement fails.
+# The same group will never repeat the exact same (weekday, slot_index) pair.
+
+1ABCDE: 2
+2ABCDE: 2
+3ABCDE: 2
+4ABCDE: 2
+5A: 2
+6ABCDEF: 3
+7A: 4

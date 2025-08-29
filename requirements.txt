@@ -1,0 +1,6 @@
+pip==25.2
+matplotlib==3.10.5
+psutil==7.0.0
+seaborn==0.13.2
+reportlab==4.4.3
+ortools==9.14.6206

@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Planificador de Horarios Escolares</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sortablejs@latest/Sortable.min.js"></script>
+    <script src="https://unpkg.com/logic-solver@2.0.1/logic-solver.js"></script>
+</head>
+<body>
+    <div id="app">
+        <header class="header">
+            <h1>🏫 Planificador de Horarios Escolares</h1>
+            <div class="header-controls">
+                <button @click="showLoadDialog = true" class="btn btn-primary">
+                    📁 Cargar JSON
+                </button>
+                <button @click="generateSchedule" class="btn btn-success" :disabled="generating || !isFeasible">
+                    {{ generating ? '⏳ Generando...' : '🎯 Generar Horario' }}
+                </button>
+                <button @click="downloadJSON" class="btn btn-info" :disabled="!hasResults">
+                    💾 Descargar JSON
+                </button>
+                <button @click="downloadPDF" class="btn btn-warning" :disabled="!hasResults">
+                    📄 Descargar PDF
+                </button>
+            </div>
+        </header>
+
+        <!-- Load JSON Dialog -->
+        <div v-if="showLoadDialog" class="modal-overlay" @click="showLoadDialog = false">
+            <div class="modal" @click.stop>
+                <h3>Cargar archivo JSON</h3>
+                <input type="file" @change="loadJSONFile" accept=".json" ref="fileInput">
+                <div class="modal-buttons">
+                    <button @click="showLoadDialog = false" class="btn">Cancelar</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Main Content -->
+        <div class="container">
+            <!-- Left Panel: Configuration with Tabs -->
+            <div class="left-panel">
+                <!-- Feasibility Indicator -->
+                <div class="feasibility-indicator" :class="feasibilityStatus">
+                    <span v-if="feasibilityStatus === 'feasible'">✅</span>
+                    <span v-else-if="feasibilityStatus === 'infeasible'">❌</span>
+                    <span v-else>⚠️</span>
+                    {{ feasibilityMessage }}
+                </div>
+
+                <!-- Tab Navigation -->
+                <div class="tab-navigation">
+                    <button 
+                        v-for="tab in tabs" 
+                        :key="tab.id"
+                        @click="activeTab = tab.id"
+                        class="tab-button"
+                        :class="{ active: activeTab === tab.id }"
+                    >
+                        {{ tab.icon }} {{ tab.name }}
+                    </button>
+                </div>
+
+                <!-- Tab Content -->
+                <div class="tab-content">
+                    <!-- Time Slots Tab -->
+                    <div v-show="activeTab === 'timeslots'">
+                        <div class="config-section">
+                            <h4>⏰ Tramos Horarios</h4>
+                            <button @click="addTimeSlot" class="btn btn-primary btn-small">
+                                ➕ Añadir Tramo
+                            </button>
+                        </div>
+                        <div class="items-grid">
+                            <div v-for="(slot, index) in timeSlots" :key="slot.id" class="time-slot-card">
+                                <div class="card-header">
+                                    <span class="slot-label">{{ weekdays[slot.weekday] }}</span>
+                                    <button @click="removeTimeSlot(index)" class="btn-delete">🗑️</button>
+                                </div>
+                                <div class="card-content">
+                                    <div class="input-group">
+                                        <label>Día:</label>
+                                        <select v-model="slot.weekday" @change="checkFeasibility">
+                                            <option v-for="(day, i) in weekdays" :key="i" :value="i">{{ day }}</option>
+                                        </select>
+                                    </div>
+                                    <div class="time-inputs">
+                                        <div class="input-group">
+                                            <label>Inicio:</label>
+                                            <input v-model="slot.start_time" type="time" @change="checkFeasibility">
+                                        </div>
+                                        <div class="input-group">
+                                            <label>Fin:</label>
+                                            <input v-model="slot.end_time" type="time" @change="checkFeasibility">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Classrooms Tab -->
+                    <div v-show="activeTab === 'classrooms'">
+                        <div class="config-section">
+                            <h4>🏛️ Aulas (Arrastra para reordenar prioridad)</h4>
+                            <button @click="addClassroom" class="btn btn-primary btn-small">
+                                ➕ Añadir Aula
+                            </button>
+                        </div>
+                        <div id="classrooms-sortable" class="items-grid">
+                            <div v-for="(room, index) in classrooms" :key="'room-' + index" class="classroom-card draggable-item" :data-index="index">
+                                <div class="priority-badge">{{ index + 1 }}</div>
+                                <div class="card-header">
+                                    <span class="room-name">{{ room.name }}</span>
+                                    <button @click="removeClassroom(index)" class="btn-delete">🗑️</button>
+                                </div>
+                                <div class="card-content">
+                                    <div class="input-group">
+                                        <label>Nombre:</label>
+                                        <input v-model="room.name" placeholder="Nombre del aula" @input="checkFeasibility">
+                                    </div>
+                                    <div class="input-group">
+                                        <label>Tipo:</label>
+                                        <select v-model="room.obligatory_type" @change="checkFeasibility">
+                                            <option value="optional">Opcional</option>
+                                            <option value="at_least_once">Al menos una vez</option>
+                                        </select>
+                                    </div>
+                                    <div class="input-group">
+                                        <label>Color:</label>
+                                        <input v-model="room.color_code" type="color" class="color-input-large">
+                                    </div>
+                                </div>
+                                <div class="card-meta">
+                                    Prioridad {{ index + 1 }} • {{ room.obligatory_type === 'at_least_once' ? 'Obligatoria' : 'Opcional' }}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Courses Tab -->
+                    <div v-show="activeTab === 'courses'">
+                        <div class="config-section">
+                            <h4>📚 Cursos</h4>
+                            <button @click="addCourse" class="btn btn-primary btn-small">
+                                ➕ Añadir Curso
+                            </button>
+                        </div>
+                        <div class="items-grid">
+                            <div v-for="(course, index) in courses" :key="'course-' + index" class="course-card">
+                                <div class="card-header">
+                                    <span class="course-name">{{ course.name }}</span>
+                                    <button @click="removeCourse(index)" class="btn-delete">🗑️</button>
+                                </div>
+                                <div class="card-content">
+                                    <div class="input-group">
+                                        <label>Nombre:</label>
+                                        <input v-model="course.name" placeholder="Nombre del curso" @input="checkFeasibility">
+                                    </div>
+                                    <div class="input-group">
+                                        <label>Color:</label>
+                                        <input v-model="course.color_code" type="color" class="color-input-small">
+                                    </div>
+                                </div>
+                                <div class="course-sessions">
+                                    <h5>Sesiones asignadas ({{ course.time_slots.length }}):</h5>
+                                    <div class="sessions-list">
+                                        <div v-for="(session, sIndex) in course.time_slots" :key="sIndex" class="session-tag">
+                                            <span class="session-text">{{ formatSessionShort(session) }}</span>
+                                            <button @click="removeSession(index, sIndex)" class="btn-delete-small">×</button>
+                                        </div>
+                                    </div>
+                                    <button @click="showSessionDialog(index)" class="btn btn-primary btn-small">
+                                        ➕ Añadir Sesión
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Right Panel: Schedule Grid -->
+            <div class="right-panel">
+                <div class="schedule-container">
+                    <h3>📅 Vista del Horario</h3>
+                    <div class="schedule-grid" v-if="timeSlots.length > 0">
+                        <div class="grid-header">
+                            <div class="time-header">Hora</div>
+                            <div v-for="(day, i) in weekdays" :key="i" class="day-header" v-show="hasDay(i)">
+                                {{ day }}
+                            </div>
+                        </div>
+                        <div v-for="timeSlot in uniqueTimeSlots" :key="timeSlot.key" class="grid-row">
+                            <div class="time-label">{{ timeSlot.start_time }}-{{ timeSlot.end_time }}</div>
+                            <div v-for="(day, dayIndex) in weekdays" :key="dayIndex" 
+                                 class="grid-cell" 
+                                 v-show="hasDay(dayIndex)"
+                                 @click="showCellDialog(dayIndex, timeSlot.slot_index)"
+                                 :class="{ 'has-content': getCellContent(dayIndex, timeSlot.slot_index).length > 0 }">
+                                <div v-for="item in getCellContent(dayIndex, timeSlot.slot_index)" 
+                                     :key="item.course + '-' + item.room" 
+                                     class="cell-item"
+                                     :style="{ backgroundColor: item.color, color: getContrastColor(item.color) }">
+                                    <div class="course-name">{{ item.course }}</div>
+                                    <div class="room-name" v-if="item.room">{{ item.room }}</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div v-else class="empty-schedule">
+                        <p>📋 Añade tramos horarios para ver la cuadrícula</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Session Dialog -->
+        <div v-if="showAddSession" class="modal-overlay" @click="showAddSession = false">
+            <div class="modal" @click.stop>
+                <h3>Añadir Sesión</h3>
+                <div class="input-group">
+                    <label>Día:</label>
+                    <select v-model="newSession.weekday">
+                        <option value="">Seleccionar día</option>
+                        <option v-for="(day, i) in weekdays" :key="i" :value="i">{{ day }}</option>
+                    </select>
+                </div>
+                <div class="input-group">
+                    <label>Tramo:</label>
+                    <select v-model="newSession.slot_index">
+                        <option value="">Seleccionar tramo</option>
+                        <option v-for="slot in getAvailableSlots(newSession.weekday)" :key="slot.slot_index" :value="slot.slot_index">
+                            {{ slot.start_time }}-{{ slot.end_time }}
+                        </option>
+                    </select>
+                </div>
+                <div class="modal-buttons">
+                    <button @click="addSession" class="btn btn-success">Añadir</button>
+                    <button @click="showAddSession = false" class="btn">Cancelar</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Status Messages -->
+        <div v-if="statusMessage" class="status-message" :class="statusType">
+            {{ statusMessage }}
+        </div>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>

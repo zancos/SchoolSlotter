@@ -279,6 +279,18 @@
           3,
           2
         ]
+      ],
+      "classroom_slots": [
+        [
+          4,
+          4,
+          "Closed Classroom"
+        ],
+        [
+          3,
+          2,
+          "Outdoor Courtyard"
+        ]
       ]
     },
     {
@@ -292,6 +304,18 @@
         [
           3,
           5
+        ]
+      ],
+      "classroom_slots": [
+        [
+          2,
+          3,
+          "Closed Classroom"
+        ],
+        [
+          3,
+          5,
+          "Outdoor Courtyard"
         ]
       ]
     },
@@ -307,6 +331,18 @@
           0,
           5
         ]
+      ],
+      "classroom_slots": [
+        [
+          3,
+          4,
+          "Outdoor Courtyard"
+        ],
+        [
+          0,
+          5,
+          "Closed Classroom"
+        ]
       ]
     },
     {
@@ -320,6 +356,18 @@
         [
           4,
           6
+        ]
+      ],
+      "classroom_slots": [
+        [
+          0,
+          2,
+          "Outdoor Courtyard"
+        ],
+        [
+          4,
+          6,
+          "Closed Classroom"
         ]
       ]
     },
@@ -335,6 +383,18 @@
           4,
           6
         ]
+      ],
+      "classroom_slots": [
+        [
+          1,
+          2,
+          "Closed Classroom"
+        ],
+        [
+          4,
+          6,
+          "Outdoor Courtyard"
+        ]
       ]
     },
     {
@@ -348,6 +408,18 @@
         [
           2,
           5
+        ]
+      ],
+      "classroom_slots": [
+        [
+          0,
+          4,
+          "Closed Classroom"
+        ],
+        [
+          2,
+          5,
+          "Outdoor Courtyard"
         ]
       ]
     },
@@ -363,6 +435,18 @@
           3,
           3
         ]
+      ],
+      "classroom_slots": [
+        [
+          2,
+          6,
+          "Outdoor Courtyard"
+        ],
+        [
+          3,
+          3,
+          "Closed Classroom"
+        ]
       ]
     },
     {
@@ -376,6 +460,18 @@
         [
           1,
           1
+        ]
+      ],
+      "classroom_slots": [
+        [
+          3,
+          1,
+          "Outdoor Courtyard"
+        ],
+        [
+          1,
+          1,
+          "Closed Classroom"
         ]
       ]
     },
@@ -391,6 +487,18 @@
           3,
           1
         ]
+      ],
+      "classroom_slots": [
+        [
+          0,
+          6,
+          "Outdoor Courtyard"
+        ],
+        [
+          3,
+          1,
+          "Closed Classroom"
+        ]
       ]
     },
     {
@@ -404,6 +512,18 @@
         [
           4,
           3
+        ]
+      ],
+      "classroom_slots": [
+        [
+          2,
+          3,
+          "Outdoor Courtyard"
+        ],
+        [
+          4,
+          3,
+          "Closed Classroom"
         ]
       ]
     },
@@ -419,6 +539,18 @@
           2,
           2
         ]
+      ],
+      "classroom_slots": [
+        [
+          1,
+          6,
+          "Closed Classroom"
+        ],
+        [
+          2,
+          2,
+          "Outdoor Courtyard"
+        ]
       ]
     },
     {
@@ -432,6 +564,18 @@
         [
           0,
           6
+        ]
+      ],
+      "classroom_slots": [
+        [
+          1,
+          6,
+          "Outdoor Courtyard"
+        ],
+        [
+          0,
+          6,
+          "Closed Classroom"
         ]
       ]
     },
@@ -447,6 +591,18 @@
           2,
           6
         ]
+      ],
+      "classroom_slots": [
+        [
+          4,
+          1,
+          "Outdoor Courtyard"
+        ],
+        [
+          2,
+          6,
+          "Closed Classroom"
+        ]
       ]
     },
     {
@@ -460,6 +616,18 @@
         [
           0,
           3
+        ]
+      ],
+      "classroom_slots": [
+        [
+          1,
+          1,
+          "Outdoor Courtyard"
+        ],
+        [
+          0,
+          3,
+          "Closed Classroom"
         ]
       ]
     },
@@ -475,6 +643,18 @@
           2,
           2
         ]
+      ],
+      "classroom_slots": [
+        [
+          4,
+          4,
+          "Outdoor Courtyard"
+        ],
+        [
+          2,
+          2,
+          "Closed Classroom"
+        ]
       ]
     },
     {
@@ -488,6 +668,18 @@
         [
           4,
           5
+        ]
+      ],
+      "classroom_slots": [
+        [
+          0,
+          2,
+          "Closed Classroom"
+        ],
+        [
+          4,
+          5,
+          "Outdoor Courtyard"
         ]
       ]
     },
@@ -503,6 +695,18 @@
           3,
           2
         ]
+      ],
+      "classroom_slots": [
+        [
+          2,
+          0,
+          "Outdoor Courtyard"
+        ],
+        [
+          3,
+          2,
+          "Closed Classroom"
+        ]
       ]
     },
     {
@@ -516,6 +720,18 @@
         [
           3,
           6
+        ]
+      ],
+      "classroom_slots": [
+        [
+          2,
+          4,
+          "Outdoor Courtyard"
+        ],
+        [
+          3,
+          6,
+          "Closed Classroom"
         ]
       ]
     },
@@ -531,6 +747,18 @@
           4,
           1
         ]
+      ],
+      "classroom_slots": [
+        [
+          1,
+          4,
+          "Outdoor Courtyard"
+        ],
+        [
+          4,
+          1,
+          "Closed Classroom"
+        ]
       ]
     },
     {
@@ -545,6 +773,18 @@
           0,
           4
         ]
+      ],
+      "classroom_slots": [
+        [
+          3,
+          4,
+          "Closed Classroom"
+        ],
+        [
+          0,
+          4,
+          "Outdoor Courtyard"
+        ]
       ]
     },
     {
@@ -558,6 +798,18 @@
         [
           3,
           3
+        ]
+      ],
+      "classroom_slots": [
+        [
+          4,
+          5,
+          "Closed Classroom"
+        ],
+        [
+          3,
+          3,
+          "Outdoor Courtyard"
         ]
       ]
     },
@@ -577,6 +829,23 @@
           0,
           3
         ]
+      ],
+      "classroom_slots": [
+        [
+          3,
+          6,
+          "Outdoor Courtyard"
+        ],
+        [
+          4,
+          0,
+          "Closed Classroom"
+        ],
+        [
+          0,
+          3,
+          "Outdoor Courtyard"
+        ]
       ]
     },
     {
@@ -594,6 +863,23 @@
         [
           2,
           4
+        ]
+      ],
+      "classroom_slots": [
+        [
+          4,
+          3,
+          "Outdoor Courtyard"
+        ],
+        [
+          1,
+          3,
+          "Outdoor Courtyard"
+        ],
+        [
+          2,
+          4,
+          "Closed Classroom"
         ]
       ]
     },
@@ -613,6 +899,23 @@
           2,
           0
         ]
+      ],
+      "classroom_slots": [
+        [
+          1,
+          2,
+          "Outdoor Courtyard"
+        ],
+        [
+          0,
+          5,
+          "Outdoor Courtyard"
+        ],
+        [
+          2,
+          0,
+          "Closed Classroom"
+        ]
       ]
     },
     {
@@ -630,6 +933,23 @@
         [
           3,
           5
+        ]
+      ],
+      "classroom_slots": [
+        [
+          4,
+          2,
+          "Closed Classroom"
+        ],
+        [
+          2,
+          1,
+          "Outdoor Courtyard"
+        ],
+        [
+          3,
+          5,
+          "Closed Classroom"
         ]
       ]
     },
@@ -649,6 +969,23 @@
           0,
           1
         ]
+      ],
+      "classroom_slots": [
+        [
+          1,
+          0,
+          "Outdoor Courtyard"
+        ],
+        [
+          3,
+          0,
+          "Outdoor Courtyard"
+        ],
+        [
+          0,
+          1,
+          "Closed Classroom"
+        ]
       ]
     },
     {
@@ -666,6 +1003,23 @@
         [
           4,
           0
+        ]
+      ],
+      "classroom_slots": [
+        [
+          1,
+          5,
+          "Closed Classroom"
+        ],
+        [
+          0,
+          0,
+          "Outdoor Courtyard"
+        ],
+        [
+          4,
+          0,
+          "Outdoor Courtyard"
         ]
       ]
     },
@@ -689,7 +1043,177 @@
           4,
           2
         ]
+      ],
+      "classroom_slots": [
+        [
+          1,
+          5,
+          "Outdoor Courtyard"
+        ],
+        [
+          2,
+          5,
+          "Closed Classroom"
+        ],
+        [
+          0,
+          1,
+          "Outdoor Courtyard"
+        ],
+        [
+          4,
+          2,
+          "Outdoor Courtyard"
+        ]
       ]
     }
-  ]
+  ],
+  "stats": {
+    "classroom_usage": {
+      "Closed Classroom": 29,
+      "Outdoor Courtyard": 35
+    },
+    "daily_usage": {
+      "4": {
+        "Closed Classroom": 7,
+        "Outdoor Courtyard": 7
+      },
+      "3": {
+        "Outdoor Courtyard": 7,
+        "Closed Classroom": 6
+      },
+      "2": {
+        "Closed Classroom": 6,
+        "Outdoor Courtyard": 7
+      },
+      "0": {
+        "Closed Classroom": 6,
+        "Outdoor Courtyard": 7
+      },
+      "1": {
+        "Closed Classroom": 4,
+        "Outdoor Courtyard": 7
+      }
+    },
+    "per_course_usage": {
+      "1º A": {
+        "Closed Classroom": 1,
+        "Outdoor Courtyard": 1
+      },
+      "1º B": {
+        "Closed Classroom": 1,
+        "Outdoor Courtyard": 1
+      },
+      "1º C": {
+        "Outdoor Courtyard": 1,
+        "Closed Classroom": 1
+      },
+      "1º D": {
+        "Outdoor Courtyard": 1,
+        "Closed Classroom": 1
+      },
+      "1º E": {
+        "Closed Classroom": 1,
+        "Outdoor Courtyard": 1
+      },
+      "2º A": {
+        "Closed Classroom": 1,
+        "Outdoor Courtyard": 1
+      },
+      "2º B": {
+        "Outdoor Courtyard": 1,
+        "Closed Classroom": 1
+      },
+      "2º C": {
+        "Outdoor Courtyard": 1,
+        "Closed Classroom": 1
+      },
+      "2º D": {
+        "Outdoor Courtyard": 1,
+        "Closed Classroom": 1
+      },
+      "2º E": {
+        "Outdoor Courtyard": 1,
+        "Closed Classroom": 1
+      },
+      "3º A": {
+        "Closed Classroom": 1,
+        "Outdoor Courtyard": 1
+      },
+      "3º B": {
+        "Outdoor Courtyard": 1,
+        "Closed Classroom": 1
+      },
+      "3º C": {
+        "Outdoor Courtyard": 1,
+        "Closed Classroom": 1
+      },
+      "3º D": {
+        "Outdoor Courtyard": 1,
+        "Closed Classroom": 1
+      },
+      "3º E": {
+        "Outdoor Courtyard": 1,
+        "Closed Classroom": 1
+      },
+      "4º A": {
+        "Closed Classroom": 1,
+        "Outdoor Courtyard": 1
+      },
+      "4º B": {
+        "Outdoor Courtyard": 1,
+        "Closed Classroom": 1
+      },
+      "4º C": {
+        "Outdoor Courtyard": 1,
+        "Closed Classroom": 1
+      },
+      "4º D": {
+        "Outdoor Courtyard": 1,
+        "Closed Classroom": 1
+      },
+      "4º E": {
+        "Closed Classroom": 1,
+        "Outdoor Courtyard": 1
+      },
+      "5º A": {
+        "Closed Classroom": 1,
+        "Outdoor Courtyard": 1
+      },
+      "6º A": {
+        "Outdoor Courtyard": 2,
+        "Closed Classroom": 1
+      },
+      "6º B": {
+        "Outdoor Courtyard": 2,
+        "Closed Classroom": 1
+      },
+      "6º C": {
+        "Outdoor Courtyard": 2,
+        "Closed Classroom": 1
+      },
+      "6º D": {
+        "Closed Classroom": 2,
+        "Outdoor Courtyard": 1
+      },
+      "6º E": {
+        "Outdoor Courtyard": 2,
+        "Closed Classroom": 1
+      },
+      "6º F": {
+        "Closed Classroom": 1,
+        "Outdoor Courtyard": 2
+      },
+      "7º A": {
+        "Outdoor Courtyard": 3,
+        "Closed Classroom": 1
+      }
+    },
+    "violations": []
+  },
+  "meta": {
+    "threads": 6,
+    "solver_status": "OPTIMAL",
+    "objective_value": 163000.0
+  }
 }
